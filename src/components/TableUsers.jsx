@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import Table from "react-bootstrap/Table";
-import { fetchALlUser } from "../services/UserService";
+import { fetchAllUsers } from "../services/UserService";
 
 const TableUsers = () => {
   const [listUsers, setListUsers] = useState([]);
@@ -10,12 +10,11 @@ const TableUsers = () => {
     getUsers();
   }, []);
   const getUsers = async () => {
-    let res = await fetchALlUser();
-    if (res && res.data && res.data.data) {
-      setListUsers(res.data.data);
+    let res = await fetchAllUsers();
+    if (res && res.data) {
+      setListUsers(res.data);
     }
   };
-  // console.log(listUsers);
   return (
     <Table striped bordered hover>
       <thead>
