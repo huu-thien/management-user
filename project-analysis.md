@@ -1,8 +1,11 @@
+Sử dụng API từ trang web https://reqres.in
+
 1. Create git repos, setup git local -> OK
 2. Login, Axios , Store to local storage
 3. Private routes. Check tokens
 4. CRUD user:
-   - List users
+   - List users :
+     - Tạo folder service, viết hàm call api ở đây ( userService -> dùng axios), ở TableUsers thì có 1 hàm để gọi hàm từ userService và useEffect sẽ gọi lại hàm đó,
    - Create user
    - Edit a user
    - Delete a user
