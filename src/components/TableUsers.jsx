@@ -6,6 +6,7 @@ import ReactPaginate from "react-paginate";
 import ModalEditUser from "./ModelEditUser";
 import ModalConfirmRemove from "./ModalConfirmRemove";
 import _, { debounce } from "lodash";
+import { CSVLink, CSVDownload } from "react-csv";
 
 import "./TableUser.scss";
 
@@ -23,7 +24,6 @@ const TableUsers = () => {
 
   const [sortBy, setSortBy] = useState("asc");
   const [sortField, setSortField] = useState("id");
-
 
   useEffect(() => {
     // call apis
@@ -96,12 +96,27 @@ const TableUsers = () => {
         <span>
           <b>List user</b>
         </span>
-        <button
-          className="btn btn-success"
-          onClick={() => setIsShowModalAddNew(true)}
-        >
-          Add new user
-        </button>
+        <div className="group-btn">
+          <button
+            className="btn btn-outline-success"
+            onClick={() => setIsShowModalAddNew(true)}
+          >
+            <i className="fa-solid fa-user-plus mx-2"></i>
+            <span>Add new </span>
+          </button>
+          <label htmlFor="import_scv" className="btn btn-outline-primary">
+            <i className="fa-solid fa-file-import mx-2"></i>Import
+          </label>
+          <input type="file" id="import_scv" hidden />
+          <CSVLink
+            data={[]}
+            filename="user.scv"
+            className="btn btn btn-outline-primary"
+          >
+            <i className="fa-solid fa-file-arrow-down mx-2"></i>
+            Export
+          </CSVLink>
+        </div>
       </div>
       <div className="col-4 my-4">
         <input
