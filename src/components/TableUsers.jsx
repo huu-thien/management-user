@@ -47,7 +47,12 @@ const TableUsers = () => {
   const handleRemoveUser = (user) => {
     setIsShowModalRemove(true);
     setDataUserRemove(user);
-    console.log(user);
+  };
+  const handleRemoveUserFromModal = (userRemove) => {
+    const listUsersCopy = _.cloneDeep(listUsers);
+    const listUserAfterRomove = listUsersCopy.filter((user) => user.id !== userRemove.id)
+    console.log(listUserAfterRomove);
+    setListUsers(listUserAfterRomove);
   };
   const handlePageClick = (e) => {
     getUsers(+e.selected + 1);
@@ -137,6 +142,7 @@ const TableUsers = () => {
         show={isShowModalRemove}
         dataUserRemove={dataUserRemove}
         handleClose={() => setIsShowModalRemove(false)}
+        handleRemoveUserFromModal={handleRemoveUserFromModal}
       />
     </>
   );

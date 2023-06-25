@@ -1,12 +1,29 @@
 import { Modal, Button, Form } from "react-bootstrap";
-import { useState } from "react";
 import PropTypes from "prop-types";
-import { postCreateUser } from "../services/UserService";
+import { deleteUser } from "../services/UserService";
 
 import { toast } from "react-toastify";
 
-const ModalConfirmRemove = ({ show, handleClose, dataUserRemove }) => {
-  const confirmDelete = () => {};
+const ModalConfirmRemove = ({
+  show,
+  handleClose,
+  dataUserRemove,
+  handleRemoveUserFromModal,
+}) => {
+  const confirmDelete = async () => {
+    let res = await deleteUser(dataUserRemove.id);
+    if (res && +res.statusCode === 204) {
+      console.log("Delete successfully user: ", {
+        id: dataUserRemove.id,
+        name: dataUserRemove.first_name,
+      });
+      handleClose();
+      handleRemoveUserFromModal(dataUserRemove);
+      toast.success("Remove user Successfully !!");
+    } else {
+      toast.error("Remove user Unsuccessfully !!");
+    }
+  };
   return (
     <div
       className="modal show"
@@ -53,5 +70,6 @@ ModalConfirmRemove.propTypes = {
   show: PropTypes.bool,
   handleClose: PropTypes.func,
   dataUserRemove: PropTypes.object,
+  handleRemoveUserFromModal: PropTypes.func,
 };
 export default ModalConfirmRemove;
