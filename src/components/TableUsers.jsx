@@ -18,12 +18,10 @@ const TableUsers = () => {
       setListUsers(res.data);
       setTotalUsers(res.total);
       setTotalPages(res.total_pages);
-      // console.log(res);
     }
   };
 
   const handlePageClick = (e) => {
-    console.log("event :", e);
     getUsers(+e.selected + 1);
   };
   return (
