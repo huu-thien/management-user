@@ -5,7 +5,7 @@ import { fetchAllUsers } from "../services/UserService";
 import ReactPaginate from "react-paginate";
 import ModalEditUser from "./ModelEditUser";
 import ModalConfirmRemove from "./ModalConfirmRemove";
-import _ from "lodash";
+import _, { debounce } from "lodash";
 
 import "./TableUser.scss";
 
@@ -23,6 +23,7 @@ const TableUsers = () => {
 
   const [sortBy, setSortBy] = useState("asc");
   const [sortField, setSortField] = useState("id");
+
 
   useEffect(() => {
     // call apis
@@ -75,6 +76,20 @@ const TableUsers = () => {
     // console.log(listUsersCopy);
     setListUsers(listUsersCopy);
   };
+  // Search by email
+  const handleSearch = debounce((e) => {
+    let keySearch = e.target.value;
+    if (keySearch) {
+      let listUsersCopy = _.cloneDeep(listUsers);
+      listUsersCopy = listUsersCopy.filter((user) =>
+        user.email.includes(keySearch)
+      );
+      setListUsers(listUsersCopy);
+    } else {
+      getUsers(1);
+    }
+  }, 500);
+
   return (
     <>
       <div className="my-3 d-flex justify-content-between align-items-center">
@@ -87,6 +102,14 @@ const TableUsers = () => {
         >
           Add new user
         </button>
+      </div>
+      <div className="col-4 my-4">
+        <input
+          onChange={(e) => handleSearch(e)}
+          type="text"
+          className="form-control"
+          placeholder="Search user by email..."
+        />
       </div>
       <Table striped bordered hover>
         <thead>
