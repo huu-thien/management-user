@@ -1,23 +1,40 @@
 import { Modal, Button, Form } from "react-bootstrap";
 import { useEffect, useState } from "react";
 import PropTypes from "prop-types";
-import { postCreateUser } from "../services/UserService";
+import { putUpdateUser } from "../services/UserService";
 
 import { toast } from "react-toastify";
 
-const ModalEditUser = ({ show, handleClose, dataUserEdit }) => {
+const ModalEditUser = ({
+  show,
+  handleClose,
+  dataUserEdit,
+  handleEditUSerFromModal,
+}) => {
   const [name, setName] = useState("");
   const [job, setJob] = useState("");
 
-  const handleEditUser = () => {
-
-  }
-  useEffect(() => {
-    if(show) {
-      setName(dataUserEdit.first_name)
+  const handleEditUser = async () => {
+    let res = await putUpdateUser(dataUserEdit.id, name, job);
+    if (res && res.updatedAt) {
+      console.log("API-Update success id: ", dataUserEdit.id, res);
+      handleClose();
+      setJob("");
+      handleEditUSerFromModal({
+        id: dataUserEdit.id,
+        first_name: res.name,
+      });
+      toast.success("Update User Successfully !!")
+    } else {
+      toast.error("Update User Unsuccessfully !!")
     }
-  }, [dataUserEdit])
-  console.log("check props: " , dataUserEdit);
+  };
+  useEffect(() => {
+    if (show) {
+      setName(dataUserEdit.first_name);
+    }
+  }, [dataUserEdit]);
+
   return (
     <div
       className="modal show"
@@ -52,7 +69,7 @@ const ModalEditUser = ({ show, handleClose, dataUserEdit }) => {
           <Button variant="secondary" onClick={handleClose}>
             Close
           </Button>
-          <Button variant="primary" onClick={handleEditUser}>
+          <Button variant="primary" onClick={() => handleEditUser()}>
             Update
           </Button>
         </Modal.Footer>
@@ -64,6 +81,7 @@ const ModalEditUser = ({ show, handleClose, dataUserEdit }) => {
 ModalEditUser.propTypes = {
   show: PropTypes.bool,
   handleClose: PropTypes.func,
-  dataUserEdit: PropTypes.object
+  dataUserEdit: PropTypes.object,
+  handleEditUSerFromModal: PropTypes.func,
 };
 export default ModalEditUser;
