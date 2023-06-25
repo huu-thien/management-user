@@ -1,27 +1,23 @@
 import { Modal, Button, Form } from "react-bootstrap";
-import { useState, useRef } from "react";
+import { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import { postCreateUser } from "../services/UserService";
 
 import { toast } from "react-toastify";
 
-const ModalAddNew = ({ show, handleClose, handleUpdateTable }) => {
+const ModalEditUser = ({ show, handleClose, dataUserEdit }) => {
   const [name, setName] = useState("");
   const [job, setJob] = useState("");
 
-  const handleSaveUser = async () => {
-    let res = await postCreateUser(name, job);
-    if (res && res.id) {
-      handleClose();
-      setName("");
-      setJob("");
-      console.log("Add user Successfully", {name, job});
-      toast.success("Add user Successfully !!");
-      handleUpdateTable({first_name: name, id: res.id, last_name: "demo-last", email: "demo@gmail.com"});
-    } else {
-      toast.error("Add user unsuccessfully !!");
+  const handleEditUser = () => {
+
+  }
+  useEffect(() => {
+    if(show) {
+      setName(dataUserEdit.first_name)
     }
-  };
+  }, [dataUserEdit])
+  console.log("check props: " , dataUserEdit);
   return (
     <div
       className="modal show"
@@ -29,7 +25,7 @@ const ModalAddNew = ({ show, handleClose, handleUpdateTable }) => {
     >
       <Modal show={show} onHide={handleClose}>
         <Modal.Header closeButton>
-          <Modal.Title>Add new User</Modal.Title>
+          <Modal.Title>Edit user</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Form>
@@ -39,7 +35,6 @@ const ModalAddNew = ({ show, handleClose, handleUpdateTable }) => {
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 type="text"
-                placeholder="Nguyen Huu Thien"
                 autoFocus
               />
             </Form.Group>
@@ -49,7 +44,6 @@ const ModalAddNew = ({ show, handleClose, handleUpdateTable }) => {
                 value={job}
                 onChange={(e) => setJob(e.target.value)}
                 type="text"
-                placeholder="Fullstack developer"
               />
             </Form.Group>
           </Form>
@@ -58,8 +52,8 @@ const ModalAddNew = ({ show, handleClose, handleUpdateTable }) => {
           <Button variant="secondary" onClick={handleClose}>
             Close
           </Button>
-          <Button variant="primary" onClick={handleSaveUser}>
-            Add New
+          <Button variant="primary" onClick={handleEditUser}>
+            Update
           </Button>
         </Modal.Footer>
       </Modal>
@@ -67,9 +61,9 @@ const ModalAddNew = ({ show, handleClose, handleUpdateTable }) => {
   );
 };
 
-ModalAddNew.propTypes = {
+ModalEditUser.propTypes = {
   show: PropTypes.bool,
   handleClose: PropTypes.func,
-  handleUpdateTable: PropTypes.func,
+  dataUserEdit: PropTypes.object
 };
-export default ModalAddNew;
+export default ModalEditUser;
