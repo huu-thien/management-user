@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import Table from "react-bootstrap/Table";
+import ModalAddNew from "./ModalAddNew";
 import { fetchAllUsers } from "../services/UserService";
 import ReactPaginate from "react-paginate";
 
@@ -7,6 +8,8 @@ const TableUsers = () => {
   const [listUsers, setListUsers] = useState([]);
   const [totalUsers, setTotalUsers] = useState(0);
   const [totalPages, setTotalPages] = useState(0);
+
+  const [isShowModalAddNew, setIsShowModalAddNew] = useState(false);
 
   useEffect(() => {
     // call apis
@@ -20,12 +23,25 @@ const TableUsers = () => {
       setTotalPages(res.total_pages);
     }
   };
-
+  const handleUpdateTable = (user) => {
+    setListUsers([...listUsers, user])
+  }
   const handlePageClick = (e) => {
     getUsers(+e.selected + 1);
   };
   return (
     <>
+      <div className="my-3 d-flex justify-content-between align-items-center">
+        <span>
+          <b>List user</b>
+        </span>
+        <button
+          className="btn btn-success"
+          onClick={() => setIsShowModalAddNew(true)}
+        >
+          Add new user
+        </button>
+      </div>
       <Table striped bordered hover>
         <thead>
           <tr>
@@ -43,7 +59,7 @@ const TableUsers = () => {
                 <td>{user.id}</td>
                 <td>{user.first_name}</td>
                 <td>{user.last_name}</td>
-                <td>@{user.email}</td>
+                <td>{user.email}</td>
               </tr>
             ))}
         </tbody>
@@ -65,6 +81,11 @@ const TableUsers = () => {
         breakLinkClassName="page-link"
         containerClassName="pagination"
         activeClassName="active"
+      />
+      <ModalAddNew
+        show={isShowModalAddNew}
+        handleClose={() => setIsShowModalAddNew(false)}
+        handleUpdateTable={handleUpdateTable}
       />
     </>
   );

@@ -1,13 +1,28 @@
 import { Modal, Button, Form } from "react-bootstrap";
-import { useState } from "react";
+import { useState, useRef } from "react";
 import PropTypes from "prop-types";
+import { postCreateUser } from "../services/UserService";
 
-const ModalAddNew = ({ show, handleClose }) => {
+import { toast } from "react-toastify";
+
+const ModalAddNew = ({ show, handleClose, handleUpdateTable }) => {
   const [name, setName] = useState("");
   const [job, setJob] = useState("");
 
-  const handleSaveUser = () => {
-    console.log({ name, job });
+  const inputRef = useRef();
+  const handleSaveUser = async () => {
+    inputRef.current.focus();
+    let res = await postCreateUser(name, job);
+    if (res && res.id) {
+      handleClose();
+      setName("");
+      setJob("");
+      console.log("Add user Successfully", {name, job});
+      toast.success("Add user Successfully !!");
+      handleUpdateTable({first_name: name, id: res.id, last_name: "demo-last", email: "demo@gmail.com"});
+    } else {
+      toast.error("Add user unsuccessfully !!");
+    }
   };
   return (
     <div
@@ -23,6 +38,7 @@ const ModalAddNew = ({ show, handleClose }) => {
             <Form.Group className="mb-3">
               <Form.Label>Name</Form.Label>
               <Form.Control
+                ref={inputRef}
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 type="text"
@@ -57,5 +73,6 @@ const ModalAddNew = ({ show, handleClose }) => {
 ModalAddNew.propTypes = {
   show: PropTypes.bool,
   handleClose: PropTypes.func,
+  handleUpdateTable: PropTypes.func,
 };
 export default ModalAddNew;
