@@ -19,3 +19,5 @@ Sử dụng API từ trang web https://reqres.in
 <!-- Kĩ thuật customize axios -->
 - Customize axios nhắm các mục đích: định nghĩa được baseURL của api back end, sau sửa thì chỉ sửa 1 chỗ -> create instance
 - Kiểm soát được dữ liệu từ api trả về -> Interceptors
+<!-- Pagination -->
+- Dùng thw viện
