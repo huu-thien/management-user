@@ -24,9 +24,9 @@ const ModalEditUser = ({
         id: dataUserEdit.id,
         first_name: res.name,
       });
-      toast.success("Update User Successfully !!")
+      toast.success("Update User Successfully !!");
     } else {
-      toast.error("Update User Unsuccessfully !!")
+      toast.error("Update User Unsuccessfully !!");
     }
   };
   useEffect(() => {
@@ -40,7 +40,12 @@ const ModalEditUser = ({
       className="modal show"
       style={{ display: "block", position: "initial" }}
     >
-      <Modal show={show} onHide={handleClose}>
+      <Modal
+        show={show}
+        onHide={handleClose}
+        backdrop="static"
+        keyboard={false}
+      >
         <Modal.Header closeButton>
           <Modal.Title>Edit user</Modal.Title>
         </Modal.Header>

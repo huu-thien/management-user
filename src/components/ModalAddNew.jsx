@@ -1,5 +1,5 @@
 import { Modal, Button, Form } from "react-bootstrap";
-import { useState, useRef } from "react";
+import { useState } from "react";
 import PropTypes from "prop-types";
 import { postCreateUser } from "../services/UserService";
 
@@ -15,9 +15,14 @@ const ModalAddNew = ({ show, handleClose, handleUpdateTable }) => {
       handleClose();
       setName("");
       setJob("");
-      console.log("Add user Successfully", {name, job});
+      console.log("Add user Successfully", { name, job });
       toast.success("Add user Successfully !!");
-      handleUpdateTable({first_name: name, id: res.id, last_name: "demo-last", email: "demo@gmail.com"});
+      handleUpdateTable({
+        first_name: name,
+        id: res.id,
+        last_name: "demo-last",
+        email: "demo@gmail.com",
+      });
     } else {
       toast.error("Add user unsuccessfully !!");
     }
@@ -27,7 +32,12 @@ const ModalAddNew = ({ show, handleClose, handleUpdateTable }) => {
       className="modal show"
       style={{ display: "block", position: "initial" }}
     >
-      <Modal show={show} onHide={handleClose}>
+      <Modal
+        show={show}
+        onHide={handleClose}
+        backdrop="static"
+        keyboard={false}
+      >
         <Modal.Header closeButton>
           <Modal.Title>Add new User</Modal.Title>
         </Modal.Header>

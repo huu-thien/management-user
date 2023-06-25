@@ -4,7 +4,8 @@ import ModalAddNew from "./ModalAddNew";
 import { fetchAllUsers } from "../services/UserService";
 import ReactPaginate from "react-paginate";
 import ModalEditUser from "./ModelEditUser";
-import _ from "lodash"
+import ModalConfirmRemove from "./ModalConfirmRemove";
+import _ from "lodash";
 
 const TableUsers = () => {
   const [listUsers, setListUsers] = useState([]);
@@ -13,7 +14,10 @@ const TableUsers = () => {
 
   const [isShowModalAddNew, setIsShowModalAddNew] = useState(false);
   const [isShowModalEdit, setIsShowModalEdit] = useState(false);
+  const [isShowModalRemove, setIsShowModalRemove] = useState(false);
+
   const [dataUserEdit, setDataUserEdit] = useState({});
+  const [dataUserRemove, setDataUserRemove] = useState({});
 
   useEffect(() => {
     // call apis
@@ -34,12 +38,16 @@ const TableUsers = () => {
     const listUsersCopy = _.cloneDeep(listUsers);
     const index = listUsers.findIndex((user) => user.id === userEdit.id);
     listUsersCopy[index].first_name = userEdit.first_name;
-    setListUsers(listUsersCopy)
+    setListUsers(listUsersCopy);
   };
   const handleEditUser = (user) => {
     setIsShowModalEdit(true);
     setDataUserEdit(user);
-    console.log(user.first_name);
+  };
+  const handleRemoveUser = (user) => {
+    setIsShowModalRemove(true);
+    setDataUserRemove(user);
+    console.log(user);
   };
   const handlePageClick = (e) => {
     getUsers(+e.selected + 1);
@@ -84,7 +92,11 @@ const TableUsers = () => {
                   >
                     Edit
                   </button>
-                  <button type="button" className="btn btn-danger">
+                  <button
+                    type="button"
+                    className="btn btn-danger"
+                    onClick={() => handleRemoveUser(user)}
+                  >
                     Delete
                   </button>
                 </td>
@@ -120,6 +132,11 @@ const TableUsers = () => {
         handleClose={() => setIsShowModalEdit(false)}
         dataUserEdit={dataUserEdit}
         handleEditUSerFromModal={handleEditUSerFromModal}
+      />
+      <ModalConfirmRemove
+        show={isShowModalRemove}
+        dataUserRemove={dataUserRemove}
+        handleClose={() => setIsShowModalRemove(false)}
       />
     </>
   );
