@@ -7,8 +7,10 @@ import ModalEditUser from "./ModelEditUser";
 import ModalConfirmRemove from "./ModalConfirmRemove";
 import _, { debounce } from "lodash";
 import { CSVLink, CSVDownload } from "react-csv";
+import Papa from "papaparse";
 
 import "./TableUser.scss";
+import { toast } from "react-toastify";
 
 const TableUsers = () => {
   const [listUsers, setListUsers] = useState([]);
@@ -116,6 +118,52 @@ const TableUsers = () => {
     }
   };
 
+  //Import data
+  const handleImportCSV = (e) => {
+    if (e.target && e.target.files && e.target.files[0]) {
+      let file = e.target.files[0];
+      if (file.type !== "text/csv") {
+        toast.error("Only accept csv file...");
+        return;
+      }
+      // Parse local CSV file
+      Papa.parse(file, {
+        // header: true,
+        complete: function (result) {
+          let rawCSV = result.data;
+          if (rawCSV.length > 0) {
+            if (rawCSV[0] && rawCSV[0].length === 3) {
+              if (
+                rawCSV[0][0] !== "first_name" ||
+                rawCSV[0][1] !== "last_name" ||
+                rawCSV[0][2] !== "email"
+              ) {
+                toast.error("Wrong format header CSV file !");
+              } else {
+                let result = [];
+                rawCSV.map((item, index) => {
+                  if (index > 0 && item.length === 3) {
+                    let obj = {};
+                    (obj.first_name = item[0]),
+                      (obj.last_name = item[1]),
+                      (obj.email = item[2]);
+                    result.push(obj);
+                  }
+                });
+                setListUsers(result);
+              }
+            } else {
+              toast.error("Wrong format CSV file !");
+            }
+          } else {
+            toast.error("Not found  data on CSV file !");
+          }
+          console.log("finished: ", result);
+        },
+      });
+    }
+  };
+
   return (
     <>
       <div className="my-3 d-flex justify-content-between align-items-center">
@@ -133,7 +181,12 @@ const TableUsers = () => {
           <label htmlFor="import_scv" className="btn btn-outline-primary">
             <i className="fa-solid fa-file-import mx-2"></i>Import
           </label>
-          <input type="file" id="import_scv" hidden />
+          <input
+            onChange={(e) => handleImportCSV(e)}
+            type="file"
+            id="import_scv"
+            hidden
+          />
           <CSVLink
             data={dataExport}
             asyncOnClick={true}
