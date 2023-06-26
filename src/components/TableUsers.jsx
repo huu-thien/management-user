@@ -25,6 +25,9 @@ const TableUsers = () => {
   const [sortBy, setSortBy] = useState("asc");
   const [sortField, setSortField] = useState("id");
 
+  // Data export
+  const [dataExport, setDataExport] = useState([]);
+
   useEffect(() => {
     // call apis
     getUsers(1);
@@ -40,6 +43,8 @@ const TableUsers = () => {
   const handleUpdateTable = (user) => {
     setListUsers([...listUsers, user]);
   };
+
+  // Edit user
   const handleEditUSerFromModal = (userEdit) => {
     const listUsersCopy = _.cloneDeep(listUsers);
     const index = listUsers.findIndex((user) => user.id === userEdit.id);
@@ -50,6 +55,8 @@ const TableUsers = () => {
     setIsShowModalEdit(true);
     setDataUserEdit(user);
   };
+
+  // Remove user
   const handleRemoveUser = (user) => {
     setIsShowModalRemove(true);
     setDataUserRemove(user);
@@ -62,20 +69,21 @@ const TableUsers = () => {
     console.log(listUserAfterRomove);
     setListUsers(listUserAfterRomove);
   };
+
+  // Pagination
   const handlePageClick = (e) => {
     getUsers(+e.selected + 1);
   };
+
   // Sort
   const handleSort = (sortBy, sortField) => {
     setSortBy(sortBy);
     setSortField(sortField);
-    // console.log(sortBy, sortField);
-
     let listUsersCopy = _.cloneDeep(listUsers);
     listUsersCopy = _.orderBy(listUsersCopy, [sortField], [sortBy]);
-    // console.log(listUsersCopy);
     setListUsers(listUsersCopy);
   };
+
   // Search by email
   const handleSearch = debounce((e) => {
     let keySearch = e.target.value;
@@ -89,6 +97,24 @@ const TableUsers = () => {
       getUsers(1);
     }
   }, 500);
+  // Export data csv
+  const getUserExport = (event, done) => {
+    let result = [];
+    console.log(listUsers);
+    if (listUsers && listUsers.length > 0) {
+      result.push(["ID", "First Name", "Last Name", "Email"]);
+      listUsers.map((user) => {
+        let arr = [];
+        arr[0] = user.id;
+        arr[1] = user.first_name;
+        arr[2] = user.last_name;
+        arr[3] = user.email;
+        result.push(arr);
+      });
+      setDataExport(result);
+      done();
+    }
+  };
 
   return (
     <>
@@ -109,8 +135,10 @@ const TableUsers = () => {
           </label>
           <input type="file" id="import_scv" hidden />
           <CSVLink
-            data={[]}
-            filename="user.scv"
+            data={dataExport}
+            asyncOnClick={true}
+            onClick={getUserExport}
+            filename="user.csv"
             className="btn btn btn-outline-primary"
           >
             <i className="fa-solid fa-file-arrow-down mx-2"></i>

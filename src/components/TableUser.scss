@@ -1,14 +1,13 @@
-
 .sort-header {
-    display: flex;
-    justify-content: space-between;
+  display: flex;
+  justify-content: space-between;
 
-    i {
-        cursor: pointer;
-        padding: 0 8px;
-    }
+  i {
+    cursor: pointer;
+    padding: 0 8px;
+  }
 }
 .group-btn {
-    display: flex;
-    gap: 10px;
+  display: flex;
+  gap: 10px;
 }
