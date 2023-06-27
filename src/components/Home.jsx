@@ -2,6 +2,7 @@ const Home = () => {
   return (
     <div style={{ marginTop: "30px" }}>
       <strong>Sử dụng API từ trang web https://reqres.in </strong>
+      <p>email: eve.holt@reqres.in <br /> pass: everything</p>
       <p><strong>1. Login, Axios , Store tolocal storage </strong></p>
       <p><strong>2. Private routes. Check tokens </strong></p>
       <ul><strong>3. CRUD user: </strong></ul>
