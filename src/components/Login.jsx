@@ -1,10 +1,11 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import { Link } from "react-router-dom";
 
 import { loginApi } from "../services/UserService";
 import { toast } from "react-toastify";
 
 import { useNavigate } from "react-router-dom";
+import { UserContext } from "../context/UserContext";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -13,13 +14,7 @@ const Login = () => {
   const [isShowPass, setIsShowPass] = useState(false);
   const [loadingApi, setLoadingApi] = useState(false);
 
-  useEffect(() => {
-    let token = localStorage.getItem("token");
-    if (token) {
-      navigate("/");
-    }
-  }, []);
-
+  const { loginContext } = useContext(UserContext);
   const handleLogin = async () => {
     if (!email || !password) {
       toast.error("Please enter email and password");
@@ -29,8 +24,8 @@ const Login = () => {
     let res = await loginApi(email.trim(), password);
     console.log(res);
     if (res && res.token) {
-      localStorage.setItem("token", res.token);
       navigate("/");
+      loginContext(email.trim(), res.token);
       toast.success("Log in successfully !!");
     } else {
       // error
