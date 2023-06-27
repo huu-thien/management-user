@@ -24,24 +24,29 @@ const Login = () => {
     let res = await loginApi(email.trim(), password);
     console.log(res);
     if (res && res.token) {
-      navigate("/");
+      navigate("/users");
       loginContext(email.trim(), res.token);
       toast.success("Log in successfully !!");
     } else {
       // error
       if (res && +res.status === 400) {
-        toast.error(res.data.error);
+        toast.error(res.data.error.toUpperCase());
       }
     }
     setLoadingApi(false);
+  };
+  const handlePressEnter = async (e) => {
+    if (+e.keyCode === 13) {
+      await handleLogin();
+    }
   };
 
   return (
     <div className="login-container col-12 col-sm-4">
       <div className="title">
-        <strong>Log in</strong>
+        <strong>LOG IN</strong>
       </div>
-      <div className="text">
+      <div className="text my-2">
         <strong>Email or username : eve.holt@reqres.in</strong>
       </div>
       <input
@@ -56,6 +61,7 @@ const Login = () => {
           onChange={(e) => setPassword(e.target.value)}
           type={isShowPass ? "text" : "password"}
           placeholder="Password..."
+          onKeyDown={(e) => handlePressEnter(e)}
         />
         <i
           className={isShowPass ? "fa-solid fa-eye" : "fa-solid fa-eye-slash"}
@@ -71,8 +77,8 @@ const Login = () => {
         Log in
       </button>
       <div className="back">
-        <i className="fa-solid fa-circle-arrow-left mx-2"></i>
-        <Link to="/" className="back-text">
+        <Link to="/" className="btn btn-outline-primary">
+          <i className="fa-solid fa-circle-arrow-left mx-2"></i>
           Go back
         </Link>
       </div>

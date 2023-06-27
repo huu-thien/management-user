@@ -1,12 +1,11 @@
 import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
-import NavDropdown from "react-bootstrap/NavDropdown";
 import logoApp from "../assets/management.png";
 import { NavLink, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { UserContext } from "../context/UserContext";
-import { useContext,  } from "react";
+import { useContext } from "react";
 
 const Header = () => {
   const { logout, user } = useContext(UserContext);
@@ -21,59 +20,54 @@ const Header = () => {
   return (
     <Navbar expand="lg" className="bg-body-tertiary">
       <Container>
-      <NavLink className="nav-link d-flex align-items-center" to="/">
-      <img
+        <NavLink className="nav-link d-flex align-items-center" to="/">
+          <img
             src={logoApp}
             width="30"
             height="30"
             className="d-inline-block align-top mx-1"
             alt="React Bootstrap logo"
           />
-          <span><strong style={{color: '#f06b1c', marginRight: '15px'}}>NHT Dev</strong></span>
-              </NavLink>
-        {/* <Navbar.Brand href="/">
-          <img
-            src={logoApp}
-            width="30"
-            height="30"
-            className="d-inline-block align-top mx-3"
-            alt="React Bootstrap logo"
-          />
-          <span>NHT Dev</span>
-        </Navbar.Brand> */}
+          <span>
+            <strong style={{ color: "#f06b1c", marginRight: "15px" }}>
+              NHT Dev
+            </strong>
+          </span>
+        </NavLink>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
-          {(user && user.auth || window.location.pathname === "/") &&(
+          {((user && user.auth) || window.location.pathname === "/") && (
             <>
               <Nav className="me-auto">
-              <NavLink className="nav-link" to="/">
-                Home
-              </NavLink>
-              <NavLink className="nav-link" to="/users">
-                User Management
-              </NavLink>
-            </Nav>
-            <Nav>
-              {user && user.email && (
-                <span className="nav-link">
-                  <strong>Welcome {user.email}</strong>
-                </span>
-              )}
-              <NavDropdown title="Settings">
+                <NavLink className="nav-link" to="/">
+                  Home
+                </NavLink>
+                <NavLink className="nav-link" to="/users">
+                  User Management
+                </NavLink>
+              </Nav>
+              <Nav>
+                {user && user.email && (
+                  <span className="nav-link" style={{ marginRight: "20px" }}>
+                    <strong>Welcome {user.email}</strong>
+                  </span>
+                )}
+
                 {!(user && user.auth) ? (
-                  <NavLink className="dropdown-item" to="/login">
+                  <NavLink className="btn btn-outline-primary" to="/login">
                     Log in
                   </NavLink>
                 ) : (
-                  <NavDropdown.Item onClick={() => handleLogout()}>
+                  <NavLink
+                    className="btn btn-outline-danger"
+                    onClick={() => handleLogout()}
+                  >
                     Log out
-                  </NavDropdown.Item>
+                  </NavLink>
                 )}
-              </NavDropdown>
-            </Nav>
+              </Nav>
             </>
           )}
-          
         </Navbar.Collapse>
       </Container>
     </Navbar>

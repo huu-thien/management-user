@@ -6,7 +6,7 @@ import ReactPaginate from "react-paginate";
 import ModalEditUser from "./ModelEditUser";
 import ModalConfirmRemove from "./ModalConfirmRemove";
 import _, { debounce } from "lodash";
-import { CSVLink, CSVDownload } from "react-csv";
+import { CSVLink } from "react-csv";
 import Papa from "papaparse";
 
 import "./TableUser.scss";
@@ -166,11 +166,11 @@ const TableUsers = () => {
 
   return (
     <>
-      <div className="my-3 d-flex justify-content-between align-items-center">
-        <span>
+      <div className="my-3 d-sm-flex  justify-content-between align-items-center">
+        <span className="">
           <b>List user</b>
         </span>
-        <div className="group-btn">
+        <div className="group-btn mt-sm-0 mt-2">
           <button
             className="btn btn-outline-success"
             onClick={() => setIsShowModalAddNew(true)}
@@ -199,7 +199,7 @@ const TableUsers = () => {
           </CSVLink>
         </div>
       </div>
-      <div className="col-4 my-4">
+      <div className="col-12 col-sm-4 my-4">
         <input
           onChange={(e) => handleSearch(e)}
           type="text"
@@ -207,74 +207,77 @@ const TableUsers = () => {
           placeholder="Search user by email..."
         />
       </div>
-      <Table striped bordered hover>
-        <thead>
-          <tr>
-            <th>
-              <div className="sort-header">
-                <span>ID</span>
-                <span>
-                  <i
-                    className="fa-solid fa-arrow-down"
-                    onClick={() => handleSort("desc", "id")}
-                  ></i>
-                  <i
-                    className="fa-solid fa-arrow-up"
-                    onClick={() => handleSort("asc", "id")}
-                  ></i>
-                </span>
-              </div>
-            </th>
-            <th>
-              <div className="sort-header">
-                <span>First Name</span>
-                <span>
-                  <i
-                    className="fa-solid fa-arrow-down"
-                    onClick={() => handleSort("desc", "first_name")}
-                  ></i>
-                  <i
-                    className="fa-solid fa-arrow-up"
-                    onClick={() => handleSort("asc", "first_name")}
-                  ></i>
-                </span>
-              </div>
-            </th>
-            <th>Last Name</th>
-            <th>Email</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {listUsers &&
-            listUsers.length > 0 &&
-            listUsers.map((user, index) => (
-              <tr key={`user-${index}`}>
-                <td>{user.id}</td>
-                <td>{user.first_name}</td>
-                <td>{user.last_name}</td>
-                <td>{user.email}</td>
-                <td className="">
-                  <button
-                    type="button"
-                    className="btn btn-primary mx-4"
-                    onClick={() => handleEditUser(user)}
-                  >
-                    Edit
-                  </button>
-                  <button
-                    type="button"
-                    className="btn btn-danger"
-                    onClick={() => handleRemoveUser(user)}
-                  >
-                    Delete
-                  </button>
-                </td>
-              </tr>
-            ))}
-        </tbody>
-      </Table>
+      <div className="customize-table">
+        <Table striped bordered hover>
+          <thead>
+            <tr>
+              <th>
+                <div className="sort-header">
+                  <span>ID</span>
+                  <span>
+                    <i
+                      className="fa-solid fa-arrow-down"
+                      onClick={() => handleSort("desc", "id")}
+                    ></i>
+                    <i
+                      className="fa-solid fa-arrow-up"
+                      onClick={() => handleSort("asc", "id")}
+                    ></i>
+                  </span>
+                </div>
+              </th>
+              <th>
+                <div className="sort-header">
+                  <span>First Name</span>
+                  <span>
+                    <i
+                      className="fa-solid fa-arrow-down"
+                      onClick={() => handleSort("desc", "first_name")}
+                    ></i>
+                    <i
+                      className="fa-solid fa-arrow-up"
+                      onClick={() => handleSort("asc", "first_name")}
+                    ></i>
+                  </span>
+                </div>
+              </th>
+              <th>Last Name</th>
+              <th>Email</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {listUsers &&
+              listUsers.length > 0 &&
+              listUsers.map((user, index) => (
+                <tr key={`user-${index}`}>
+                  <td>{user.id}</td>
+                  <td>{user.first_name}</td>
+                  <td>{user.last_name}</td>
+                  <td>{user.email}</td>
+                  <td className="">
+                    <button
+                      type="button"
+                      className="btn btn-primary mx-4"
+                      onClick={() => handleEditUser(user)}
+                    >
+                      Edit
+                    </button>
+                    <button
+                      type="button"
+                      className="btn btn-danger"
+                      onClick={() => handleRemoveUser(user)}
+                    >
+                      Delete
+                    </button>
+                  </td>
+                </tr>
+              ))}
+          </tbody>
+        </Table>
+      </div>
       <ReactPaginate
+        className="pagination"
         breakLabel="..."
         nextLabel="next >"
         onPageChange={handlePageClick}

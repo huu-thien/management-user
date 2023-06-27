@@ -1,4 +1,5 @@
 import { createContext, useState } from "react";
+import PropTypes from "prop-types";
 
 const UserContext = createContext({ email: "", auth: false });
 
@@ -23,5 +24,7 @@ const UserProvider = ({ children }) => {
     </UserContext.Provider>
   );
 };
-
+UserProvider.propTypes = {
+  children: PropTypes.node,
+};
 export { UserContext, UserProvider };
