@@ -32,8 +32,16 @@ const Header = () => {
           </Nav>
           <Nav>
             <NavDropdown title="Settings">
-              <NavDropdown.Item href="/login">Login</NavDropdown.Item>
-              <NavDropdown.Item href="/logout">Logout</NavDropdown.Item>
+              <NavDropdown.Item>
+                <NavLink className="nav-link" to="/login">
+                  Log in
+                </NavLink>
+              </NavDropdown.Item>
+              <NavDropdown.Item>
+                <NavLink className="nav-link" to="/logout">
+                  Log out
+                </NavLink>
+              </NavDropdown.Item>
             </NavDropdown>
           </Nav>
         </Navbar.Collapse>
