@@ -8,14 +8,14 @@ const UserProvider = ({ children }) => {
   const loginContext = (email, token) => {
     localStorage.setItem("token", token);
     localStorage.setItem("email", email);
-    setUser((user) => ({ email: email, auth: true }));
+    setUser(() => ({ email: email, auth: true }));
   };
 
   const logout = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("email");
 
-    setUser((user) => ({ email: "", auth: false }));
+    setUser(() => ({ email: "", auth: false }));
   };
   return (
     <UserContext.Provider value={{ user, loginContext, logout }}>

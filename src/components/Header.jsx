@@ -6,7 +6,7 @@ import logoApp from "../assets/management.png";
 import { NavLink, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { UserContext } from "../context/UserContext";
-import { useContext, useEffect, useState } from "react";
+import { useContext,  } from "react";
 
 const Header = () => {
   const { logout, user } = useContext(UserContext);
@@ -21,7 +21,17 @@ const Header = () => {
   return (
     <Navbar expand="lg" className="bg-body-tertiary">
       <Container>
-        <Navbar.Brand href="/">
+      <NavLink className="nav-link d-flex align-items-center" to="/">
+      <img
+            src={logoApp}
+            width="30"
+            height="30"
+            className="d-inline-block align-top mx-1"
+            alt="React Bootstrap logo"
+          />
+          <span><strong style={{color: '#f06b1c', marginRight: '15px'}}>NHT Dev</strong></span>
+              </NavLink>
+        {/* <Navbar.Brand href="/">
           <img
             src={logoApp}
             width="30"
@@ -30,7 +40,7 @@ const Header = () => {
             alt="React Bootstrap logo"
           />
           <span>NHT Dev</span>
-        </Navbar.Brand>
+        </Navbar.Brand> */}
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           {(user && user.auth || window.location.pathname === "/") &&(
