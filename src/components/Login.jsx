@@ -1,10 +1,24 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 
-const login = () => {
+import { loginApi } from "../services/UserService";
+import { toast } from "react-toastify";
+
+const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isShowPass, setIsShowPass] = useState(false);
+
+  const handleLogin = async () => {
+    if(!email || !password) {
+      toast.error("Please enter email and password")
+      return;
+    }
+    let res = await loginApi(email, password);
+    if(res && res.token) {
+      localStorage.setItem("token", res.token);
+    }
+  }
 
   return (
     <div className="login-container col-12 col-sm-4">
@@ -12,7 +26,7 @@ const login = () => {
         <strong>Log in</strong>
       </div>
       <div className="text">
-        <strong>Email or username</strong>
+        <strong>Email or username : eve.holt@reqres.in</strong>
       </div>
       <input
         value={email}
@@ -32,6 +46,7 @@ const login = () => {
       <button
         className={email && password && "active"}
         disabled={!(email && password)}
+        onClick={handleLogin}
       >
         Log in
       </button>
@@ -45,4 +60,4 @@ const login = () => {
   );
 };
 
-export default login;
+export default Login;

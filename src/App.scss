@@ -16,6 +16,7 @@
     outline: none;
     padding: 10px 10px;
     margin-bottom: 10px;
+    font-weight: 500;
     background-color: #1618230f;
     border: 1px solid #1618230f;
     &:hover {
@@ -24,7 +25,6 @@
   }
   .input-block {
     position: relative;
-
     i {
       position: absolute;
       right: 10px;
