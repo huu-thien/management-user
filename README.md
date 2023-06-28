@@ -1,1 +1,1 @@
-https://manage-user.pages.dev/
+https://management-user-sigma.vercel.app/
