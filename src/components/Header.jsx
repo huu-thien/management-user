@@ -4,18 +4,26 @@ import Navbar from "react-bootstrap/Navbar";
 import logoApp from "../assets/management.png";
 import { NavLink, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import { UserContext } from "../context/UserContext";
-import { useContext } from "react";
+import { useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { handleLogoutRedux } from "../redux/actions/userActions";
 
 const Header = () => {
-  const { logout, user } = useContext(UserContext);
-
   const navigate = useNavigate();
+
+  const user = useSelector((state) => state.user.account);
+  const dispatch = useDispatch();
+
   const handleLogout = () => {
-    logout();
-    navigate("/");
-    toast.success("Log out successfully !!");
+    dispatch(handleLogoutRedux());
   };
+
+  useEffect(() => {
+    if (user && !user.auth) {
+      navigate("/");
+      toast.success("Log out successfully !!");
+    }
+  }, [user]);
 
   return (
     <Navbar expand="lg" className="bg-body-tertiary">
